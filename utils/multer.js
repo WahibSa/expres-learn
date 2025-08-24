@@ -11,30 +11,30 @@ const createUploader = ({
       cb(null, destination);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + path.extname(file.originalname));
+      cb(null, Date.now() + file.originalname);
     },
   });
 
-  const fileFilter = (req, file, cb) => {
-    if (allowedTypes.length === 0) {
-      return cb(null, true);
-    }
+  //   const fileFilter = (req, file, cb) => {
+  //     if (allowedTypes.length === 0) {
+  //       return cb(null, true);
+  //     }
 
-    const extname = allowedTypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
-    const mimetype = allowedTypes.test(file.mimetype);
+  //     const extname = allowedTypes.test(
+  //       path.extname(file.originalname).toLowerCase()
+  //     );
+  //     const mimetype = allowedTypes.test(file.mimetype);
 
-    if (extname && mimetype) {
-      cb(null, true);
-    } else {
-      cb(new Error(`Only ${allowedTypes} files are allowed!`), false);
-    }
-  };
+  //     if (extname && mimetype) {
+  //       cb(null, true);
+  //     } else {
+  //       cb(new Error(`Only ${allowedTypes} files are allowed!`), false);
+  //     }
+  //   };
 
   return multer({
     storage,
-    fileFilter,
+    //  fileFilter,
     limits: { fileSize: maxSizeMB * 1024 * 1024 },
   });
 };

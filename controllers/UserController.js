@@ -1,9 +1,17 @@
 import { User } from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const token = req.header("Authorization").replace("Bearer ", "");
+    console.log("Token:", token); // Debugging line to check the token value
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.id) {
+      const users = await User.find();
+      res.status(200).json(users);
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
   } catch (error) {
     res.status(500).json({ message: "Error fetching users :" + error.message });
   }
